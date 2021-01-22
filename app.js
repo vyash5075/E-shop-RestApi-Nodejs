@@ -2,7 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
+const app = express();
+const port = process.env.PORT || 3000;
 const productRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
 const userRoutes = require("./api/routes/user");
@@ -12,15 +13,15 @@ const { adminAuth } = require("./api/middleware/check-auth");
 require("dotenv").config();
 
 mongoose.connect(
-  "mongodb+srv://admin:admin@cluster0.hk577.mongodb.net/e_shop?retryWrites=true&w=majority"
-);
+  "mongodb+srv://admin:admin@cluster0.hk577.mongodb.net/e_shop?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useUnifiedTopology: true });
+
 mongoose.connection.on("connected", () => {
   console.log("mongodb connection established successfully");
 });
 mongoose.connection.on("error", () => {
   console.log("mongodb connection Failed");
 });
-const app = express();
 // Log request data
 app.use(morgan("dev"));
 
